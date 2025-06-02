@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Student Detail{% endblock %}
+
+{% block content %}
+<h2>{{ student.name }}'s Details</h2>
+
+<p><strong>Name:</strong> {{ student.name }}</p>
+<p><strong>Email:</strong> {{ student.email }}</p>
+
+<form method="post" class="row g-2 mb-3">
+    {% csrf_token %}
+    <div class="col-md-5">
+        <input type="text" name="subject_name" class="form-control" placeholder="Add Subject" required>
+    </div>
+    <div class="col-md-3">
+        <select name="grade_type" class="form-select" required>
+            <option value="" disabled selected>Select Grade Type</option>
+            <option value="Activity">Activity</option>
+            <option value="Quiz">Quiz</option>
+            <option value="Exam">Exam</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <input type="number" name="grade_value" class="form-control" placeholder="Score" step="0.01" required>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">Add Subject & Grade</button>
+    </div>
+</form>
+
+{% for subject in subjects %}
+    <div class="card mb-3">
+        <div class="card-header bg-success text-white">
+            <strong>{{ subject.name }}</strong>
+        </div>
+        <div class="card-body">
+            <ul>
+                {% for grade in grades %}
+                    {% if grade.subject.id == subject.id %}
+                        <li>{{ grade.grade_type }}: {{ grade.score }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <form method="post" class="row g-2 mt-3">
+                {% csrf_token %}
+                <input type="hidden" name="grade_subject" value="{{ subject.id }}">
+                <div class="col-md-4">
+                    <select name="grade_type" class="form-select" required>
+                        <option value="Activity">Activity</option>
+                        <option value="Quiz">Quiz</option>
+                        <option value="Exam">Exam</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="score" class="form-control" placeholder="Score" step="0.01" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-secondary">Add Grade</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endfor %}
+<a href="{% url 'admin_dashboard' %}" class="btn btn-success mt-3">Back to Dashboard</a>
+{% endblock %}

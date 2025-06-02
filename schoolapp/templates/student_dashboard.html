@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<p class="text-end">Logged in as: <strong>{{ user.username }}</strong></p>
+
+<h2>Welcome, {{ student.name }}</h2>
+
+{% for subject in subjects %}
+    <div class="card mb-3">
+        <div class="card-header bg-success text-white">{{ subject.name }}</div>
+        <div class="card-body">
+            <ul>
+                {% for grade in subject.grades.all %}
+                    <li>{{ grade.grade_type }}: {{ grade.score }}</li>
+                {% empty %}
+                    <li>No grades yet</li>
+                {% endfor %}
+            </ul> 
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}
