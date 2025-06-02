@@ -14,7 +14,8 @@ SECRET_KEY = 'django-insecure-)%b@o&!k_&%=^ihcx$vmx6m1ii(=5po-8=czf*zir5cdm4h$xj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['student-info-final-lab.onrender.com']
+ALLOWED_HOSTS = ['student-info-final-lab.onrender.com', '127.0.0.1:8000', 'localhost']
+
 
 
 # Application definition
@@ -108,6 +109,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'schoolapp' / 'static']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
