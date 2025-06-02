@@ -2,17 +2,21 @@
 {% block title %}Student Detail{% endblock %}
 
 {% block content %}
-<h2>{{ student.name }}'s Details</h2>
+<h2 class="mb-4">{{ student.name }}'s Details</h2>
 
-<p><strong>Name:</strong> {{ student.name }}</p>
-<p><strong>Email:</strong> {{ student.email }}</p>
+<div class="mb-4">
+    <p><strong>Name:</strong> {{ student.name }}</p>
+    <p><strong>Email:</strong> {{ student.email }}</p>
+</div>
 
-<form method="post" class="row g-2 mb-3">
+<form method="post" class="row gy-2 gx-2 align-items-end mb-4">
     {% csrf_token %}
-    <div class="col-md-5">
+    <div class="col-12 col-md-5">
+        <label class="form-label">Subject Name</label>
         <input type="text" name="subject_name" class="form-control" placeholder="Add Subject" required>
     </div>
-    <div class="col-md-3">
+    <div class="col-12 col-md-3">
+        <label class="form-label">Grade Type</label>
         <select name="grade_type" class="form-select" required>
             <option value="" disabled selected>Select Grade Type</option>
             <option value="Activity">Activity</option>
@@ -20,47 +24,53 @@
             <option value="Exam">Exam</option>
         </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-12 col-md-2">
+        <label class="form-label">Score</label>
         <input type="number" name="grade_value" class="form-control" placeholder="Score" step="0.01" required>
     </div>
-    <div class="col-md-2">
-        <button type="submit" class="btn btn-success w-100">Add Subject & Grade</button>
+    <div class="col-12 col-md-2">
+        <button type="submit" class="btn btn-success w-100 mt-md-4">Add Subject & Grade</button>
     </div>
 </form>
 
 {% for subject in subjects %}
-    <div class="card mb-3">
+    <div class="card mb-4">
         <div class="card-header bg-success text-white">
             <strong>{{ subject.name }}</strong>
         </div>
         <div class="card-body">
-            <ul>
-                {% for grade in grades %}
-                    {% if grade.subject.id == subject.id %}
-                        <li>{{ grade.grade_type }}: {{ grade.score }}</li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+            {% with subject_grades=grades|dictsort:"grade_type" %}
+                <ul class="mb-3">
+                    {% for grade in grades %}
+                        {% if grade.subject.id == subject.id %}
+                            <li>{{ grade.grade_type }}: {{ grade.score }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endwith %}
 
-            <form method="post" class="row g-2 mt-3">
+            <form method="post" class="row gy-2 gx-2 align-items-end">
                 {% csrf_token %}
                 <input type="hidden" name="grade_subject" value="{{ subject.id }}">
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Grade Type</label>
                     <select name="grade_type" class="form-select" required>
                         <option value="Activity">Activity</option>
                         <option value="Quiz">Quiz</option>
                         <option value="Exam">Exam</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Score</label>
                     <input type="number" name="score" class="form-control" placeholder="Score" step="0.01" required>
                 </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-secondary">Add Grade</button>
+                <div class="col-12 col-md-4">
+                    <button type="submit" class="btn btn-secondary w-100 mt-md-4">Add Grade</button>
                 </div>
             </form>
         </div>
     </div>
 {% endfor %}
-<a href="{% url 'admin_dashboard' %}" class="btn btn-success mt-3">Back to Dashboard</a>
+
+<a href="{% url 'admin_dashboard' %}" class="btn btn-success mt-4">Back to Dashboard</a>
 {% endblock %}

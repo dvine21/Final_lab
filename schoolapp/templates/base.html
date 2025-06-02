@@ -3,39 +3,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Student System{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+
 <body class="bg-light">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-4">
-    <img src="{% static 'img/logo.png' %}" alt="Cavite State University Logo" width="50px">
-    <a class="navbar-brand text-white" href="#">
-        Cavite State University
-    </a>
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{% static 'img/logo.png' %}" alt="Cavite State University Logo" width="40" class="me-2">
+            Cavite State University
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-            {% if user.is_authenticated %}
-                {% if user.is_superuser %}
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_dashboard' %}">Student Dashboard</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_dashboard' %}">Student Dashboard</a>
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                </li>
-            {% endif %}
-        </ul>
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -43,6 +51,6 @@
     {% block content %}
     {% endblock %}
 </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
